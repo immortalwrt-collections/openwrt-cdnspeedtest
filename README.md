@@ -1,5 +1,7 @@
 ## CloudflareSpeedTest on OpenWrt
 
+已弃用，请移步至 [immortalwrt/packages](https://github.com/immortalwrt/packages/tree/master/net/cdnspeedtest)。
+
 ### 项目地址：[XIU2/CloudflareSpeedTest](https://github.com/XIU2/CloudflareSpeedTest)
 ### 项目简介:
 > 国外很多网站都在使用 Cloudflare CDN，但分配给中国访客的 IP 并不友好（高延迟/高丢包/速度慢等）。
