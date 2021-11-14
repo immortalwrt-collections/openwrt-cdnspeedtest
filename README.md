@@ -10,11 +10,11 @@
 > 本项目也适用于其他 CDN，但是需要自行寻找 CDN IP 段及下载测速地址（否则只能延迟测速）。
 - - -
 ### 使用方法
-- 从 [Releases](https://github.com/immortalwrt/openwrt-cdnspeedtest/releases) 下载对应的预编译软件包
+- 从 [Releases](https://github.com/immortalwrt-collections/openwrt-cdnspeedtest/releases) 下载对应的预编译软件包
 - 自行编译
   ```bash
   # 进入 OpenWrt buildroot 根目录
-  $ echo "src-git cdnspeedtest https://github.com/immortalwrt/openwrt-cdnspeedtest.git" >> "feeds.conf.default"
+  $ echo "src-git cdnspeedtest https://github.com/immortalwrt-collections/openwrt-cdnspeedtest.git" >> "feeds.conf.default"
   $ ./scripts/feeds update -a
   $ ./scripts/feeds install golang cdnspeedtest
 
@@ -26,4 +26,4 @@
   ```
 - - -
 ### 协议
-#### 本仓库基于 [GNU General Public License v3.0](https://github.com/immortalwrt/openwrt-cdnspeedtest/blob/master/LICENSE) 许可证进行分发
+#### 本仓库基于 [GNU General Public License v3.0](https://github.com/immortalwrt-collections/openwrt-cdnspeedtest/blob/master/LICENSE) 许可证进行分发
