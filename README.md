@@ -10,7 +10,7 @@
 > 本项目也适用于其他 CDN，但是需要自行寻找 CDN IP 段及下载测速地址（否则只能延迟测速）。
 - - -
 ### 使用方法
-- 从 [Actions](https://github.com/immortalwrt/openwrt-cdnspeedtest/actions) 或 [Releases](https://github.com/immortalwrt/openwrt-cdnspeedtest/releases) 下载对应的预编译软件包
+- 从 [Releases](https://github.com/immortalwrt/openwrt-cdnspeedtest/releases) 下载对应的预编译软件包
 - 自行编译
   ```bash
   # 进入 OpenWrt buildroot 根目录

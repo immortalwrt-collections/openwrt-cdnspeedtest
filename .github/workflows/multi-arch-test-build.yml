@@ -1,11 +1,7 @@
 name: Test Build
 
 on:
-  push:
-    branches:
-      - master
-    paths-ignore:
-      - '**.md'
+  workflow_dispatch:
   pull_request:
     paths-ignore:
       - '**.md'
@@ -82,6 +78,7 @@ jobs:
 
       - name: Store packages
         uses: actions/upload-artifact@v2
+        if: github.event_name != 'release'
         with:
           name: ${{ matrix.arch}}-${{ github.sha}}-packages
           path: "*.ipk"
@@ -92,7 +89,7 @@ jobs:
           name: ${{ matrix.arch}}-${{ github.sha}}-logs
           path: logs/
 
-      - name: Upload packages to release
+      - name: Upload packages
         uses: svenstaro/upload-release-action@v2
         if: github.event_name == 'release'
         with:
