@@ -62,12 +62,12 @@ jobs:
             runtime_test: true
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
       - name: Build
-        uses: openwrt/gh-action-sdk@v3
+        uses: openwrt/gh-action-sdk@v5
         env:
           ARCH: ${{ matrix.arch }}-master
           FEEDNAME: packages_ci
@@ -77,20 +77,20 @@ jobs:
         run: cp bin/packages/${{ matrix.arch }}/packages_ci/*.ipk . || true
 
       - name: Store packages
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: github.event_name != 'release'
         with:
           name: ${{ matrix.arch}}-${{ github.sha}}-packages
           path: "*.ipk"
 
       - name: Store logs
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.arch}}-${{ github.sha}}-logs
           path: logs/
 
       - name: Upload packages
-        uses: svenstaro/upload-release-action@v2
+        uses: floralatin/upload-release-action@3688e13ae053ba3052eb4f0cfe03e78deb8f88d7
         if: github.event_name == 'release'
         with:
           repo_token: ${{ github.token }}
