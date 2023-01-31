@@ -34,6 +34,8 @@ define Package/cdnspeedtest
   DEPENDS:=$(GO_ARCH_DEPENDS) +ca-bundle
 endef
 
+GO_PKG_TARGET_VARS:=$(filter-out CGO_ENABLED=%,$(GO_PKG_TARGET_VARS)) CGO_ENABLED=0
+
 define Package/cdnspeedtest/install
 	$(call GoPackage/Package/Install/Bin,$(PKG_INSTALL_DIR))
 	$(INSTALL_DIR) $(1)/usr/bin
