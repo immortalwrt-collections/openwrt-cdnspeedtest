@@ -26,7 +26,7 @@ jobs:
             runtime_test: false
 
           - arch: aarch64_generic
-            target: rockchip-armv8
+            target: armsr-armv8
             runtime_test: false
 
           - arch: arm_cortex-a7_neon-vfpv4
@@ -38,7 +38,7 @@ jobs:
             runtime_test: false
 
           - arch: arm_cortex-a15_neon-vfpv4
-            target: armvirt-32
+            target: armsr-armv7
             runtime_test: true
 
           - arch: i386_pentium4
@@ -57,6 +57,10 @@ jobs:
             target: mt7621
             runtime_test: false
 
+          - arch: riscv64_riscv64
+            target: sifiveu-generic
+            runtime_test: false
+
           - arch: x86_64
             target: x86-64
             runtime_test: true
@@ -67,11 +71,12 @@ jobs:
           fetch-depth: 0
 
       - name: Build
-        uses: openwrt/gh-action-sdk@v5
+        uses: openwrt/gh-action-sdk@v7
         env:
-          ARCH: ${{ matrix.arch }}-master
+          ARCH: ${{ matrix.arch }}
           FEEDNAME: packages_ci
           PACKAGES: cdnspeedtest
+          V: s
 
       - name: Move created packages to project dir
         run: cp bin/packages/${{ matrix.arch }}/packages_ci/*.ipk . || true
@@ -90,7 +95,7 @@ jobs:
           path: logs/
 
       - name: Upload packages
-        uses: floralatin/upload-release-action@3688e13ae053ba3052eb4f0cfe03e78deb8f88d7
+        uses: svenstaro/upload-release-action@v2
         if: github.event_name == 'release'
         with:
           repo_token: ${{ github.token }}
@@ -104,7 +109,9 @@ jobs:
       - name: Register QEMU
         if: ${{ matrix.runtime_test }}
         run: |
-          sudo docker run --rm --privileged aptman/qus -s -- -p
+          sudo apt-get update
+          sudo apt-get install -y qemu-user-static binfmt-support
+          sudo update-binfmts --import
 
       - name: Build Docker container
         if: ${{ matrix.runtime_test }}
