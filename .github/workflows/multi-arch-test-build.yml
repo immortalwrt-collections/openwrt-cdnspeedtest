@@ -19,7 +19,7 @@ jobs:
         include:
           - arch: aarch64_cortex-a53
             target: mvebu-cortexa53
-            runtime_test: true
+            runtime_test: false
 
           - arch: aarch64_cortex-a72
             target: mvebu-cortexa72
@@ -27,7 +27,7 @@ jobs:
 
           - arch: aarch64_generic
             target: armsr-armv8
-            runtime_test: false
+            runtime_test: true
 
           - arch: arm_cortex-a7_neon-vfpv4
             target: ipq40xx-generic
@@ -51,7 +51,7 @@ jobs:
 
           - arch: mips_24kc
             target: ath79-generic
-            runtime_test: false
+            runtime_test: true
 
           - arch: mipsel_24kc
             target: mt7621
