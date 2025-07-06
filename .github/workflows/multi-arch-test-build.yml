@@ -18,62 +18,39 @@ jobs:
       matrix:
         include:
           - arch: aarch64_cortex-a53
-            target: mvebu-cortexa53
             runtime_test: false
-
           - arch: aarch64_cortex-a72
-            target: mvebu-cortexa72
             runtime_test: false
-
+          - arch: aarch64_cortex-a76
+            runtime_test: false
           - arch: aarch64_generic
-            target: armsr-armv8
             runtime_test: true
-
           - arch: arm_cortex-a7_neon-vfpv4
-            target: ipq40xx-generic
             runtime_test: false
-
           - arch: arm_cortex-a9_vfpv3-d16
-            target: mvebu-cortexa9
             runtime_test: false
-
           - arch: arm_cortex-a15_neon-vfpv4
-            target: armsr-armv7
             runtime_test: true
-
           - arch: i386_pentium4
-            target: x86-generic
             runtime_test: false
-
-          - arch: i386_pentium-mmx
-            target: x86-geode
-            runtime_test: true
-
           - arch: mips_24kc
-            target: ath79-generic
             runtime_test: true
-
           - arch: mipsel_24kc
-            target: mt7621
             runtime_test: false
-
           - arch: riscv64_riscv64
-            target: sifiveu-generic
             runtime_test: false
-
           - arch: x86_64
-            target: x86-64
             runtime_test: true
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Build
-        uses: openwrt/gh-action-sdk@v7
+        uses: openwrt/gh-action-sdk@v9
         env:
-          ARCH: ${{ matrix.arch }}
+          ARCH: ${{ matrix.arch }}-openwrt-24.10
           FEEDNAME: packages_ci
           PACKAGES: cdnspeedtest
           V: s
@@ -82,16 +59,16 @@ jobs:
         run: cp bin/packages/${{ matrix.arch }}/packages_ci/*.ipk . || true
 
       - name: Store packages
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: github.event_name != 'release'
         with:
-          name: ${{ matrix.arch}}-${{ github.sha}}-packages
+          name: ${{ matrix.arch }}-${{ github.sha }}-packages
           path: "*.ipk"
 
       - name: Store logs
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.arch}}-${{ github.sha}}-logs
+          name: ${{ matrix.arch }}-${{ github.sha }}-logs
           path: logs/
 
       - name: Upload packages
@@ -116,11 +93,11 @@ jobs:
       - name: Build Docker container
         if: ${{ matrix.runtime_test }}
         run: |
-          docker build -t test-container --build-arg ARCH .github/workflows/
+          docker build --platform linux/${{ matrix.arch }} -t test-container --build-arg ARCH .github/workflows/
         env:
-          ARCH: ${{ matrix.arch }}
+          ARCH: ${{ matrix.arch }}-openwrt-24.10
 
       - name: Test via Docker container
         if: ${{ matrix.runtime_test }}
         run: |
-          docker run --rm -v $GITHUB_WORKSPACE:/ci test-container
+          docker --platform linux/${{ matrix.arch }} run --rm -v $GITHUB_WORKSPACE:/ci test-container
