@@ -100,4 +100,4 @@ jobs:
       - name: Test via Docker container
         if: ${{ matrix.runtime_test }}
         run: |
-          docker --platform linux/${{ matrix.arch }} run --rm -v $GITHUB_WORKSPACE:/ci test-container
+          docker run --platform linux/${{ matrix.arch }} --rm -v $GITHUB_WORKSPACE:/ci test-container
